@@ -1,0 +1,1160 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPO 光模块产业链小白研究手册</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg2: #0b1b31;
+      --card: rgba(13, 31, 55, 0.86);
+      --card2: rgba(9, 23, 43, 0.92);
+      --line: rgba(92, 184, 255, 0.28);
+      --text: #e8f3ff;
+      --muted: #9eb6d4;
+      --blue: #39a8ff;
+      --cyan: #42f5ff;
+      --green: #53e6a5;
+      --yellow: #ffd84d;
+      --orange: #ff9d42;
+      --red: #ff6375;
+      --purple: #a78bfa;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.36);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(53, 168, 255, 0.25), transparent 30%),
+        radial-gradient(circle at 85% 5%, rgba(66, 245, 255, 0.16), transparent 32%),
+        linear-gradient(180deg, #06101d 0%, #07111f 40%, #0a1220 100%);
+      color: var(--text);
+      line-height: 1.72;
+    }
+
+    a { color: #8fd5ff; text-decoration: none; }
+    a:hover { color: #ffffff; text-decoration: underline; }
+
+    .page {
+      width: min(1180px, calc(100% - 34px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 68px 0 48px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(80, 180, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(80, 180, 255, 0.05) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(180deg, black, transparent 90%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 9px;
+      align-items: center;
+      padding: 7px 12px;
+      border: 1px solid rgba(66, 245, 255, 0.3);
+      border-radius: 999px;
+      color: #bdf8ff;
+      background: rgba(15, 45, 78, 0.62);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+    }
+
+    h1 {
+      margin: 22px 0 18px;
+      font-size: clamp(38px, 6vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -0.06em;
+    }
+
+    .hero-subtitle {
+      font-size: 21px;
+      color: #c7d9ef;
+      max-width: 760px;
+      margin: 0 0 24px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .hero-stat {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(10, 27, 49, 0.74);
+    }
+
+    .hero-stat b {
+      display: block;
+      font-size: 24px;
+      color: #fff;
+      line-height: 1.15;
+    }
+
+    .hero-stat span { color: var(--muted); font-size: 13px; }
+
+    .device-hero {
+      min-height: 420px;
+      border: 1px solid rgba(66, 245, 255, 0.28);
+      border-radius: 30px;
+      background:
+        linear-gradient(145deg, rgba(17, 55, 92, 0.72), rgba(5, 16, 32, 0.9)),
+        radial-gradient(circle at 60% 30%, rgba(66, 245, 255, 0.2), transparent 36%);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+    }
+
+    .network-lines {
+      position: absolute;
+      inset: 0;
+      opacity: 0.5;
+      background-image:
+        linear-gradient(120deg, transparent 0 45%, rgba(99, 219, 255, 0.18) 45% 46%, transparent 46% 100%),
+        linear-gradient(35deg, transparent 0 55%, rgba(75, 142, 255, 0.16) 55% 56%, transparent 56% 100%);
+      background-size: 190px 120px;
+    }
+
+    .chip-board {
+      position: relative;
+      z-index: 2;
+      margin: 54px auto 0;
+      width: min(420px, 100%);
+      height: 276px;
+      border-radius: 28px;
+      background: linear-gradient(145deg, #0d2646, #08192e);
+      border: 1px solid rgba(126, 210, 255, 0.5);
+      box-shadow: inset 0 0 40px rgba(66, 245, 255, 0.08), 0 30px 70px rgba(0, 0, 0, 0.5);
+    }
+
+    .switch-chip {
+      position: absolute;
+      width: 154px;
+      height: 154px;
+      border-radius: 24px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(160deg, #1b6fb8, #12243d);
+      border: 1px solid rgba(200, 242, 255, 0.8);
+      box-shadow: 0 0 42px rgba(57, 168, 255, 0.52);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+    }
+
+    .optical-engine {
+      position: absolute;
+      width: 62px;
+      height: 62px;
+      border-radius: 16px;
+      background: linear-gradient(160deg, #33e8ff, #1565c0);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 0 28px rgba(66, 245, 255, 0.52);
+    }
+    .oe1 { left: 36px; top: 42px; }
+    .oe2 { right: 36px; top: 42px; }
+    .oe3 { left: 36px; bottom: 42px; }
+    .oe4 { right: 36px; bottom: 42px; }
+
+    .fiber {
+      position: absolute;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(66,245,255,0.08), rgba(66,245,255,0.86), rgba(66,245,255,0.08));
+      box-shadow: 0 0 14px rgba(66,245,255,0.65);
+    }
+    .f1 { left: 90px; top: 72px; width: 98px; transform: rotate(20deg); }
+    .f2 { right: 90px; top: 72px; width: 98px; transform: rotate(-20deg); }
+    .f3 { left: 90px; bottom: 72px; width: 98px; transform: rotate(-20deg); }
+    .f4 { right: 90px; bottom: 72px; width: 98px; transform: rotate(20deg); }
+
+    .floating-label {
+      position: absolute;
+      z-index: 3;
+      right: 22px;
+      bottom: 22px;
+      padding: 10px 13px;
+      border-radius: 14px;
+      color: #07111f;
+      background: linear-gradient(90deg, #42f5ff, #ffd84d);
+      font-weight: 900;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+
+    .toc {
+      margin: 28px 0 26px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(6, 20, 38, 0.76);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+    }
+
+    .toc a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(53, 168, 255, 0.1);
+      border: 1px solid rgba(53, 168, 255, 0.2);
+      color: #d9f3ff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .section {
+      margin: 28px 0;
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(13, 31, 55, 0.86), rgba(8, 20, 38, 0.92));
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .section-title {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 18px;
+    }
+
+    .num {
+      width: 44px;
+      height: 44px;
+      flex: 0 0 44px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, var(--blue), var(--cyan));
+      display: grid;
+      place-items: center;
+      color: #06101d;
+      font-weight: 1000;
+      box-shadow: 0 10px 28px rgba(57, 168, 255, 0.3);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      color: #ffffff;
+      font-size: 22px;
+      line-height: 1.35;
+    }
+
+    .lead { color: #c8dbf0; font-size: 17px; margin-top: 4px; }
+    .muted { color: var(--muted); }
+    .highlight {
+      color: #07111f;
+      background: linear-gradient(90deg, #42f5ff, #ffd84d);
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .card {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(5, 19, 36, 0.64);
+      border: 1px solid rgba(126, 210, 255, 0.18);
+    }
+
+    .card h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      color: #fff;
+    }
+
+    .tag {
+      display: inline-flex;
+      margin: 4px 6px 4px 0;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(66,245,255,0.09);
+      border: 1px solid rgba(66,245,255,0.2);
+      color: #bdf8ff;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(110px, 1fr));
+      gap: 10px;
+      margin: 18px 0 8px;
+    }
+
+    .flow-item {
+      min-height: 96px;
+      border-radius: 18px;
+      border: 1px solid rgba(126, 210, 255, 0.25);
+      background: linear-gradient(180deg, rgba(23, 57, 94, 0.78), rgba(8, 24, 45, 0.88));
+      padding: 13px;
+      position: relative;
+    }
+
+    .flow-item::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 34%;
+      color: var(--cyan);
+      font-weight: 900;
+      z-index: 2;
+    }
+    .flow-item:last-child::after { content: ""; }
+    .flow-item b { display: block; color: #fff; font-size: 15px; }
+    .flow-item span { color: var(--muted); font-size: 12px; }
+
+    .device-card {
+      border-radius: 24px;
+      background: radial-gradient(circle at 50% 0%, rgba(66,245,255,0.18), transparent 45%), rgba(5, 18, 35, 0.8);
+      border: 1px solid rgba(126, 210, 255, 0.22);
+      padding: 18px;
+      overflow: hidden;
+    }
+
+    .device-img {
+      height: 210px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #102a4a, #071426);
+      border: 1px solid rgba(126, 210, 255, 0.22);
+      display: grid;
+      place-items: center;
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .pluggable {
+      width: 260px;
+      height: 82px;
+      border-radius: 18px 8px 8px 18px;
+      background: linear-gradient(145deg, #d7e7f5, #64798c);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.34);
+      position: relative;
+      transform: perspective(550px) rotateX(14deg) rotateY(-18deg);
+    }
+    .pluggable::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      width: 82px;
+      height: 46px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, #13283d, #06101d);
+      box-shadow: inset 0 0 12px rgba(66,245,255,0.3);
+    }
+    .pluggable::after {
+      content: "QSFP / OSFP";
+      position: absolute;
+      right: 18px;
+      top: 28px;
+      color: #102034;
+      font-weight: 1000;
+      font-size: 14px;
+    }
+
+    .switchbox {
+      width: 310px;
+      height: 126px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #25384e, #0a1625);
+      border: 1px solid rgba(220,240,255,0.4);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.42);
+      position: relative;
+    }
+    .port { position:absolute; width:28px; height:17px; border-radius:4px; background:#07111f; border:1px solid rgba(124,220,255,0.45); }
+    .port:nth-child(1){left:22px;top:26px}.port:nth-child(2){left:58px;top:26px}.port:nth-child(3){left:94px;top:26px}.port:nth-child(4){left:130px;top:26px}.port:nth-child(5){left:166px;top:26px}.port:nth-child(6){left:202px;top:26px}.port:nth-child(7){left:238px;top:26px}
+    .port:nth-child(8){left:22px;top:56px}.port:nth-child(9){left:58px;top:56px}.port:nth-child(10){left:94px;top:56px}.port:nth-child(11){left:130px;top:56px}.port:nth-child(12){left:166px;top:56px}.port:nth-child(13){left:202px;top:56px}.port:nth-child(14){left:238px;top:56px}
+
+    .asic {
+      width: 180px;
+      height: 180px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, #145da0, #081f39);
+      border: 1px solid rgba(189, 248, 255, 0.72);
+      box-shadow: 0 0 45px rgba(66,245,255,0.38);
+      position: relative;
+    }
+    .asic::before {
+      content:"Switch ASIC";
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      font-weight:1000;
+      color:white;
+    }
+    .pin { position:absolute; width:9px; height:22px; background:#8fd5ff; border-radius:3px; opacity:.7; }
+    .pin.p1{left:-7px;top:28px}.pin.p2{left:-7px;top:68px}.pin.p3{left:-7px;top:108px}.pin.p4{right:-7px;top:28px}.pin.p5{right:-7px;top:68px}.pin.p6{right:-7px;top:108px}
+
+    .laser {
+      width: 270px;
+      height: 92px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 216, 77, 0.5);
+      background: linear-gradient(90deg, #3c2a09, #ffb21f, #ffeaa0);
+      box-shadow: 0 0 50px rgba(255, 216, 77, 0.36);
+      position: relative;
+    }
+    .laser::after {
+      content: "";
+      position: absolute;
+      right: -110px;
+      top: 43px;
+      width: 110px;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ffeaa0, rgba(255,234,160,0));
+      box-shadow: 0 0 24px rgba(255, 216, 77, 0.78);
+    }
+
+    .fiber-array {
+      width: 275px;
+      height: 78px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #d4dde8, #6b7a8a);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transform: rotate(-4deg);
+    }
+    .fiber-array span {
+      width: 13px; height: 48px; border-radius: 99px;
+      background: linear-gradient(180deg, #42f5ff, #0c4d83);
+      box-shadow: 0 0 12px rgba(66,245,255,0.5);
+    }
+
+    .package {
+      width: 286px;
+      height: 178px;
+      border-radius: 28px;
+      background: linear-gradient(145deg, #142842, #0a1424);
+      border: 1px solid rgba(126,210,255,0.38);
+      position: relative;
+      box-shadow: inset 0 0 30px rgba(66,245,255,0.08), 0 18px 60px rgba(0,0,0,0.42);
+    }
+    .package .die { position:absolute; border-radius:18px; background:linear-gradient(145deg,#2976bf,#0d2742); border:1px solid rgba(220,250,255,.6); }
+    .package .d1 { width:118px; height:118px; left:84px; top:30px; }
+    .package .d2 { width:48px; height:48px; left:24px; top:24px; background:linear-gradient(145deg,#42f5ff,#125e92); }
+    .package .d3 { width:48px; height:48px; right:24px; top:24px; background:linear-gradient(145deg,#42f5ff,#125e92); }
+    .package .d4 { width:48px; height:48px; left:24px; bottom:24px; background:linear-gradient(145deg,#42f5ff,#125e92); }
+    .package .d5 { width:48px; height:48px; right:24px; bottom:24px; background:linear-gradient(145deg,#42f5ff,#125e92); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 18px;
+      margin: 18px 0;
+      background: rgba(5, 18, 35, 0.58);
+    }
+
+    th, td {
+      border-bottom: 1px solid rgba(126, 210, 255, 0.16);
+      padding: 13px 14px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { color: #dff8ff; background: rgba(57, 168, 255, 0.16); font-size: 14px; }
+    td { color: #c7d9ef; }
+    tr:last-child td { border-bottom: 0; }
+
+    .ticker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .ticker-card {
+      min-height: 330px;
+      padding: 12px;
+      border: 1px solid rgba(126, 210, 255, 0.2);
+      border-radius: 20px;
+      background: rgba(5, 18, 35, 0.64);
+      overflow: hidden;
+    }
+
+    .ticker-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 0 0 8px;
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    .ticker-title small { color: var(--muted); font-weight: 700; }
+
+    .tv-widget {
+      height: 272px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0b1220;
+    }
+
+    .source-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 216, 77, 0.22);
+      background: rgba(255, 216, 77, 0.06);
+      color: #e7dba8;
+    }
+
+    .callout {
+      padding: 18px;
+      border-left: 4px solid var(--cyan);
+      border-radius: 16px;
+      background: rgba(66,245,255,0.08);
+      margin: 18px 0;
+      color: #dffaff;
+    }
+
+    .warning {
+      border-left-color: var(--yellow);
+      background: rgba(255,216,77,0.08);
+      color: #fff1bc;
+    }
+
+    .checklist li { margin-bottom: 8px; }
+
+    .footer {
+      margin: 38px 0 70px;
+      padding: 24px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(5, 18, 35, 0.72);
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner, .two-col { grid-template-columns: 1fr; }
+      .hero-grid, .three-col { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr 1fr; }
+      .flow-item::after { display:none; }
+      .toc { position: static; }
+    }
+
+    @media (max-width: 560px) {
+      .section { padding: 20px; }
+      .flow { grid-template-columns: 1fr; }
+      .ticker-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="page hero-inner">
+      <div>
+        <div class="eyebrow">AI 数据中心 · 光模块 · CPO · 产业链入门</div>
+        <h1>CPO 光模块产业链小白研究手册</h1>
+        <p class="hero-subtitle">从 AI 数据中心网络瓶颈出发，进阶拆解 800G / 1.6T 光模块、DSP / LPO / CPO 路线、硅光与外置光源、光器件价值量、交换芯片话语权、封装良率、客户认证和估值验证框架。</p>
+        <div class="hero-grid">
+          <div class="hero-stat"><b>当前主线</b><span>订单、产能、毛利率、客户认证</span></div>
+          <div class="hero-stat"><b>中期变量</b><span>DSP 去留、硅光渗透、1.6T 节奏</span></div>
+          <div class="hero-stat"><b>长期方向</b><span>交换芯片主导的光电系统重构</span></div>
+        </div>
+      </div>
+      <div class="device-hero" aria-label="CPO共封装光学示意图">
+        <div class="network-lines"></div>
+        <div class="chip-board">
+          <div class="optical-engine oe1"></div>
+          <div class="optical-engine oe2"></div>
+          <div class="optical-engine oe3"></div>
+          <div class="optical-engine oe4"></div>
+          <div class="fiber f1"></div><div class="fiber f2"></div><div class="fiber f3"></div><div class="fiber f4"></div>
+          <div class="switch-chip">Switch<br/>ASIC</div>
+        </div>
+        <div class="floating-label">光引擎靠近交换芯片</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <nav class="toc">
+      <a href="#big-picture">大图景</a>
+      <a href="#demand">下游需求</a>
+      <a href="#network">交换机设备</a>
+      <a href="#asic">交换芯片</a>
+      <a href="#module">光模块</a>
+      <a href="#lpo">LPO</a>
+      <a href="#cpo-engine">CPO 光引擎</a>
+      <a href="#chips">光芯片</a>
+      <a href="#components">光器件</a>
+      <a href="#package">封装测试</a>
+      <a href="#companies">公司行情</a>
+      <a href="#framework">研究框架</a>
+    </nav>
+
+    <section id="big-picture" class="section">
+      <div class="section-title">
+        <div class="num">0</div>
+        <div>
+          <h2>先把大图景看懂：CPO 不是一个单品，而是 AI 网络架构升级</h2>
+          <p class="lead">把 CPO 理解成“把光学器件搬到交换芯片旁边”，比理解成“新一代光模块”更准确。</p>
+        </div>
+      </div>
+
+      <div class="flow">
+        <div class="flow-item"><b>AI 集群扩容</b><span>GPU 数量上升，网络成为算力效率瓶颈</span></div>
+        <div class="flow-item"><b>Scale-out</b><span>服务器之间互联，拉动 800G / 1.6T 光模块</span></div>
+        <div class="flow-item"><b>Scale-up</b><span>机柜内 GPU 互联，对低延迟和低功耗更敏感</span></div>
+        <div class="flow-item"><b>交换芯片升级</b><span>51.2T → 102.4T，SerDes 速率继续上升</span></div>
+        <div class="flow-item"><b>光电转换升级</b><span>DSP、LPO、硅光、CPO 路线并行竞争</span></div>
+        <div class="flow-item"><b>价值量迁移</b><span>从模块盒子走向光引擎、光芯片和封装</span></div>
+        <div class="flow-item"><b>商业化验证</b><span>客户认证、可靠性、良率和成本决定放量</span></div>
+      </div>
+
+      <div class="callout">
+        进阶记忆法：CPO 不是“某个光模块新品”，而是当 SerDes 速率、交换容量和前面板密度继续上升后，交换芯片厂、交换机厂、光模块厂、光芯片厂和封装厂重新分配价值量的一种系统架构。短期业绩看 800G / 1.6T，长期胜负看谁能掌握光电系统集成。
+      </div>
+
+      <div class="source-box">
+        背景外链：Broadcom 对 CPO 的解释强调，它是把 optics 与 silicon 集成到同一封装基板上，用来应对 AI 互连中的带宽、功耗和成本挑战：
+        <a href="https://www.broadcom.com/topics/what-is-co-packaged-optics" target="_blank" rel="noopener">Broadcom：What is Co-Packaged Optics?</a>
+      </div>
+    </section>
+
+    <section id="demand" class="section">
+      <div class="section-title">
+        <div class="num">1</div>
+        <div>
+          <h2>下游需求：AI 数据中心为什么突然需要这么多光模块？</h2>
+          <p class="lead">需求源头不是光模块公司自己创造的，而是云厂商、AI 算力平台和大模型公司把 GPU 集群做得越来越大。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>这一层是干什么的？</h3>
+          <p>AI 数据中心的网络需求可以拆成两类：第一类是 scale-out，也就是服务器与服务器、机柜与机柜之间的横向互联，当前主要拉动 800G / 1.6T 可插拔光模块；第二类是 scale-up，也就是机柜内 GPU 或加速器之间的高速互联，对低延迟、低功耗和高可靠要求更高，是 CPO、NPO、光 I/O 等长期技术路线的重要应用场景。</p>
+          <p>所以 AI 数据中心买光模块，真正买的是：<span class="highlight">更高 GPU 利用率、更低网络功耗、更稳定的训练效率，以及更可控的总拥有成本</span>。如果网络拖慢 GPU，几万美元一张的加速卡就会被浪费，这就是光互连价值被重新定价的底层原因。</p>
+          <h3>你要重点盯什么？</h3>
+          <ul class="checklist">
+            <li>云厂商资本开支中，AI 服务器、网络设备、光模块的预算是否继续上修。</li>
+            <li>NVIDIA、Broadcom、Marvell、Arista 对 800G、1.6T、CPO、硅光、scale-up 网络的表述。</li>
+            <li>800G 是否继续放量，1.6T 是否进入批量认证和小规模交付。</li>
+            <li>CPO 是否从 OFC 展示、样机验证进入云厂商真实采购，而不是停留在技术演示。</li>
+            <li>客户是否从“只看带宽”转向“带宽 / 功耗 / 散热 / 可维护性 / 单 bit 成本”综合评估。</li>
+          </ul>
+        </div>
+        <div class="device-card">
+          <div class="device-img">
+            <div class="switchbox">
+              <div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div>
+              <div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div>
+            </div>
+          </div>
+          <h4>设备图：AI 数据中心交换机</h4>
+          <p class="muted">交换机负责把 GPU 服务器、存储和网络连接起来，是高速光模块和 CPO 落地的核心载体。</p>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th>下游客户类型</th><th>代表公司</th><th>它们关心的问题</th></tr></thead>
+        <tbody>
+          <tr><td>全球云厂商</td><td>Microsoft、Amazon AWS、Google、Meta、Oracle</td><td>采购量最大，关注 800G / 1.6T 交付、功耗、TCO、供应链稳定性</td></tr>
+          <tr><td>AI 算力平台</td><td>NVIDIA 生态客户、CoreWeave 等</td><td>关注 GPU 利用率、训练效率、网络拥塞、交付速度</td></tr>
+          <tr><td>中国云厂商</td><td>阿里云、腾讯云、字节火山、百度智能云</td><td>关注国产供应链、安全可控、成本控制、算力中心建设节奏</td></tr>
+          <tr><td>模型与应用公司</td><td>OpenAI、Anthropic、xAI、字节、百度等</td><td>不一定直接采购光模块，但通过算力租赁和训练需求影响云厂商资本开支</td></tr>
+        </tbody>
+      </table>
+
+      <div class="source-box">
+        背景外链：NVIDIA Spectrum-X 定位于 AI 网络平台，强调面向大规模 AI 工作负载的高性能网络：
+        <a href="https://www.nvidia.com/en-us/networking/spectrumx/" target="_blank" rel="noopener">NVIDIA Spectrum-X Ethernet Platform</a>
+      </div>
+    </section>
+
+    <section id="network" class="section">
+      <div class="section-title">
+        <div class="num">2</div>
+        <div>
+          <h2>网络设备层：交换机、路由器、网卡，是光互连的“交通枢纽”</h2>
+          <p class="lead">CPO 能不能落地，最终不是光模块厂单独决定，而是交换机系统厂和交换芯片厂决定。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>交换机为什么重要？</h3>
+          <p>交换机相当于 AI 数据中心里的“高速路口”。在大模型训练中，GPU 之间需要频繁同步数据。如果交换机吞吐不足、端口速率不够、延迟太高，GPU 就会等待网络，导致昂贵算力闲置。</p>
+          <p>CPO 和交换机强相关，是因为 CPO 改变的是交换机内部的光电布局：传统方案把光模块插在前面板，CPO 则把光引擎移到交换 ASIC 附近。这样可能降低高速电信号传输损耗，但也会带来散热、维护、良率、供应链责任划分等新问题。</p>
+          <h3>对应公司</h3>
+          <table>
+            <thead><tr><th>公司</th><th>角色</th><th>研究重点</th></tr></thead>
+            <tbody>
+              <tr><td>NVIDIA / Mellanox</td><td>AI 网络系统</td><td>InfiniBand、Spectrum-X、NVLink / scale-up 生态，对光互连需求有强牵引</td></tr>
+              <tr><td>Arista</td><td>数据中心交换机</td><td>云厂商交换机份额、AI 以太网部署、800G 交换机节奏</td></tr>
+              <tr><td>Cisco</td><td>网络设备与硅光</td><td>Silicon One、CPO 演示、企业与数据中心网络升级</td></tr>
+              <tr><td>Broadcom</td><td>交换芯片生态</td><td>Tomahawk / Jericho 系列、CPO 与硅光系统方案，产业话语权强</td></tr>
+              <tr><td>HPE / Juniper</td><td>网络设备</td><td>高性能网络与数据中心交换设备，关注并购整合后的竞争格局</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="device-card">
+          <div class="device-img">
+            <div class="switchbox">
+              <div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div>
+              <div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div><div class="port"></div>
+            </div>
+          </div>
+          <h4>设备图：前面板插光模块的交换机</h4>
+          <p class="muted">传统方案里，光模块插在交换机前面板；CPO 则把光学部分往交换芯片内部移动。</p>
+        </div>
+      </div>
+
+      <div class="source-box">
+        背景外链：Cisco 曾展示基于 Silicon One ASIC 的 CPO 数据中心交换系统，并对比传统可插拔光模块方案的功耗差异：
+        <a href="https://blogs.cisco.com/sp/cisco-demonstrates-co-packaged-optics-cpo-system-at-ofc-2023" target="_blank" rel="noopener">Cisco：CPO system demonstration at OFC</a>
+      </div>
+    </section>
+
+    <section id="asic" class="section">
+      <div class="section-title">
+        <div class="num">3</div>
+        <div>
+          <h2>交换芯片层：Switch ASIC 和 SerDes，是 CPO 的“大脑与神经”</h2>
+          <p class="lead">如果你只看光模块，就会漏掉 CPO 最有话语权的环节：交换 ASIC、SerDes、DSP 和系统级芯片公司。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>Switch ASIC 是什么？</h3>
+          <p>Switch ASIC 是专门用来做数据交换的芯片，决定交换机的总容量、端口速率、转发能力和功耗水平。当前行业从 51.2T 交换容量继续向 102.4T 甚至更高演进，单通道 SerDes 也从 100G 往 200G、400G 方向推进。</p>
+          <h3>SerDes 是什么？</h3>
+          <p>SerDes 是高速电信号收发器。速率越高，电信号在 PCB 上跑得越远，损耗、串扰、功耗和信号完整性问题就越严重。传统方案需要 DSP、Retimer、复杂 PCB 和更高功耗去补偿；CPO 的思路是缩短这段电路径，把更多距离交给光信号完成。</p>
+          <div class="callout warning">进阶判断：CPO 表面上利好光学，但实际会强化交换 ASIC、SerDes、系统设计和先进封装的话语权。未来价值量未必全部留在传统光模块厂，可能向 Broadcom、NVIDIA、Marvell、Cisco 这类系统和芯片厂集中。</div>
+        </div>
+        <div class="device-card">
+          <div class="device-img">
+            <div class="asic"><span class="pin p1"></span><span class="pin p2"></span><span class="pin p3"></span><span class="pin p4"></span><span class="pin p5"></span><span class="pin p6"></span></div>
+          </div>
+          <h4>设备图：交换 ASIC 芯片</h4>
+          <p class="muted">CPO 不是只换光模块，而是围绕交换 ASIC 重新设计光电互连。</p>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th>公司</th><th>环节</th><th>为什么相关</th></tr></thead>
+        <tbody>
+          <tr><td>Broadcom</td><td>Switch ASIC、CPO、硅光</td><td>交换芯片主导者，关注 Tomahawk 系列、CPO 商用节奏、与云厂商合作</td></tr>
+          <tr><td>NVIDIA</td><td>AI 网络芯片与系统</td><td>GPU、NVLink、InfiniBand、Spectrum-X 形成网络闭环，牵引光互连需求</td></tr>
+          <tr><td>Marvell</td><td>DSP、SerDes、定制 ASIC</td><td>既受益高速光模块 DSP，也参与 AI 定制互连芯片；LPO / CPO 会影响 DSP 价值量</td></tr>
+          <tr><td>Credo</td><td>高速连接芯片、AEC</td><td>偏高速电连接和 AEC，受益 AI 互连但与 CPO 是部分替代 / 互补关系</td></tr>
+          <tr><td>Astera Labs</td><td>PCIe / CXL 连接芯片</td><td>偏服务器内部互连，和 CPO 不同层级，但同属 AI 数据通路升级</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="module" class="section">
+      <div class="section-title">
+        <div class="num">4</div>
+        <div>
+          <h2>光模块层：当前最确定的业绩主线还是 800G / 1.6T</h2>
+          <p class="lead">很多股票讲 CPO，但财报兑现往往来自传统可插拔高速光模块。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>光模块到底做什么？</h3>
+          <p>光模块负责完成“电信号 ↔ 光信号”的转换。服务器或交换机芯片输出的是电信号，但高速远距离传输更适合光信号，因此需要光模块把电信号变成光信号，通过光纤传输后再还原成电信号。</p>
+          <p>当前 AI 数据中心最确定的业绩主线仍是 800G 光模块，下一步是 1.6T。研究时要区分“收入兑现”和“概念预期”：800G / 1.6T 出货、产能、良率和毛利率决定短期业绩；CPO、硅光、LPO 决定中长期估值想象空间。</p>
+          <h3>对应公司</h3>
+          <table>
+            <thead><tr><th>公司</th><th>市场</th><th>你要看什么</th></tr></thead>
+            <tbody>
+              <tr><td>中际旭创</td><td>A 股</td><td>全球高速数通光模块龙头之一，重点看 800G / 1.6T 出货、海外客户、毛利率和产能</td></tr>
+              <tr><td>新易盛</td><td>A 股</td><td>高速数通光模块弹性强，重点看大客户认证、产品结构升级和订单持续性</td></tr>
+              <tr><td>光迅科技</td><td>A 股</td><td>光模块 + 光芯片 + 器件综合平台，重点看数通高端化和国产替代</td></tr>
+              <tr><td>Coherent</td><td>美股</td><td>光模块、激光器、InP、材料平台，既看短期数通，也看硅光 / CPO 平台能力</td></tr>
+              <tr><td>Lumentum</td><td>美股</td><td>激光器和光器件平台，受益外置光源、高速光模块和硅光方案</td></tr>
+              <tr><td>Fabrinet</td><td>美股</td><td>光通信代工制造，跟随头部光模块客户订单和产能扩张</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="device-card">
+          <div class="device-img">
+            <div class="pluggable"></div>
+          </div>
+          <h4>设备图：可插拔光模块</h4>
+          <p class="muted">传统光模块像一个独立小盒子，插在交换机前面板。当前 AI 数据中心最确定的需求仍在这一层。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="lpo" class="section">
+      <div class="section-title">
+        <div class="num">5</div>
+        <div>
+          <h2>LPO：从可插拔到 CPO 之间的过渡路线</h2>
+          <p class="lead">LPO 不是 CPO，但它回答了一个现实问题：在不大改系统架构的情况下，能不能先降功耗、降成本？</p>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card"><h4>传统 DSP 光模块</h4><p>稳定性强，适合大规模部署。DSP 负责信号补偿和均衡，但带来更高成本、功耗和供应链依赖。</p></div>
+        <div class="card"><h4>LPO 光模块</h4><p>弱化或取消模块端 DSP，依赖系统端 SerDes 质量和链路设计，目标是降低功耗和延迟，但对系统协同要求更高。</p></div>
+        <div class="card"><h4>CPO / NPO 光引擎</h4><p>从“插拔式模块”转向“板上 / 封装内光引擎”，能缩短电路径，但量产、散热、运维和责任边界更复杂。</p></div>
+      </div>
+
+      <table>
+        <thead><tr><th>路线</th><th>优点</th><th>难点</th><th>阶段判断</th></tr></thead>
+        <tbody>
+          <tr><td>DSP 可插拔</td><td>成熟可靠、客户接受度高、可维护性强</td><td>功耗和成本随速率上升，DSP 价值量较高</td><td>当前主流，800G 仍是核心</td></tr>
+          <tr><td>LPO</td><td>降低模块功耗和成本，仍保留可插拔形态</td><td>链路预算更紧，对交换机和模块协同要求高</td><td>1.6T 前后重要过渡路线</td></tr>
+          <tr><td>硅光可插拔</td><td>适合高密度集成，长期成本潜力好</td><td>激光光源、封装、良率、热管理是关键</td><td>从 800G / 1.6T 向更高速率渗透</td></tr>
+          <tr><td>CPO / NPO</td><td>更短电路径、更高密度、更低潜在单 bit 功耗</td><td>运维、散热、良率、标准化和责任边界难</td><td>长期方向，需等待大客户真实量产验证</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="cpo-engine" class="section">
+      <div class="section-title">
+        <div class="num">6</div>
+        <div>
+          <h2>CPO 光引擎：未来价值迁移的核心部件</h2>
+          <p class="lead">CPO 光引擎可以理解为“被拆小、被搬近、被系统化集成的光模块核心”。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>一个 CPO 光引擎包含什么？</h3>
+          <p>CPO 光引擎不是简单的小光模块，而是把激光光源、调制器、探测器、Driver、TIA、光纤阵列、透镜、耦合结构、散热结构和封装基板整合进更靠近交换 ASIC 的位置。它决定了 CPO 能否把理论功耗优势变成可量产产品。</p>
+          <h3>难点在哪里？</h3>
+          <ul class="checklist">
+            <li>光耦合：光纤、透镜、光芯片必须精准对准，耦合损耗决定链路预算。</li>
+            <li>热管理：交换 ASIC 发热很高，光器件对温度敏感，热串扰会影响稳定性。</li>
+            <li>良率：多个光引擎和大芯片共同封装，任何环节失效都可能放大成本。</li>
+            <li>可维护性：传统光模块坏了可以拔掉换，CPO 坏了怎么维修是数据中心客户非常关心的问题。</li>
+            <li>供应链责任：CPO 把交换芯片、光引擎、封装、整机深度绑定，谁负责交付和售后会影响商业模式。</li>
+            <li>标准化：没有足够统一的接口和生态，CPO 很难像可插拔光模块一样快速规模化。</li>
+          </ul>
+        </div>
+        <div class="device-card">
+          <div class="device-img">
+            <div class="package"><div class="die d1"></div><div class="die d2"></div><div class="die d3"></div><div class="die d4"></div><div class="die d5"></div></div>
+          </div>
+          <h4>设备图：CPO 共封装示意</h4>
+          <p class="muted">中间是交换 ASIC，周围是光引擎。核心是让电信号少跑一点，让光学部分更靠近计算和交换芯片。</p>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th>公司</th><th>相关位置</th><th>研究重点</th></tr></thead>
+        <tbody>
+          <tr><td>Broadcom</td><td>CPO 交换芯片与系统</td><td>关键看 CPO 交换机是否从样机进入云厂商批量部署，以及外置光源 / 硅光路线选择</td></tr>
+          <tr><td>Coherent</td><td>光引擎、硅光、激光器</td><td>拥有材料、InP、激光器、硅光等平台能力，适合作为 CPO 光学平台跟踪对象</td></tr>
+          <tr><td>Lumentum</td><td>高功率激光器、光器件</td><td>重点看外置光源、硅光配套和高功率 CW Laser 需求</td></tr>
+          <tr><td>天孚通信</td><td>光器件、光电封装</td><td>重点看是否进入高端光引擎、硅光、FAU、透镜、耦合封装供应链</td></tr>
+          <tr><td>中际旭创 / 新易盛</td><td>高速光模块</td><td>短期看可插拔光模块，长期看是否从模块系统集成延伸到光引擎或共封装合作</td></tr>
+          <tr><td>Cisco / NVIDIA</td><td>系统厂商</td><td>决定 CPO 是否在真实网络系统中被接受，以及如何解决运维和标准化问题</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="chips" class="section">
+      <div class="section-title">
+        <div class="num">7</div>
+        <div>
+          <h2>光芯片层：激光器、调制器、探测器、硅光，是底层壁垒</h2>
+          <p class="lead">光模块和 CPO 的底层能力，很大程度来自光芯片和硅光平台。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+<h3>1）激光器：负责产生光，也是外置光源路线的关键</h3>
+<p>激光器是光通信的起点。传统模块里激光器通常集成在模块内部；硅光和 CPO 场景下，外置光源 ELS / CW Laser 重要性上升，因为硅本身不擅长发光，需要借助 InP 等 III-V 材料提供高质量光源。</p>
+<p><span class="tag">Lumentum</span><span class="tag">Coherent</span><span class="tag">源杰科技</span><span class="tag">光迅科技</span></p>
+<h3>2）调制器：负责把数据写到光上，是高速化核心</h3>
+<p>调制器让连续光按照 0 和 1 的数据变化。常见路线包括硅光调制器、InP 调制器、薄膜铌酸锂调制器。速率越高，调制器的带宽、插损、线性度和功耗越关键。</p>
+<p><span class="tag">Broadcom</span><span class="tag">Cisco</span><span class="tag">Coherent</span><span class="tag">光库科技</span></p>
+<h3>3）探测器与 TIA：负责把光变回电</h3>
+<p>探测器接收光信号，TIA 负责把微弱电流放大成可处理的电信号。高速接收端的灵敏度、噪声、带宽和封装寄生参数，会直接影响链路稳定性。</p>
+<h3>4）硅光：不是单个器件，而是平台化集成路线</h3>
+<p>硅光的优势是高密度、可规模制造、适合与 CMOS 工艺和先进封装结合。难点是光源、耦合、热管理和良率。未来 1.6T、3.2T、CPO 若放量，硅光平台的重要性会继续提升。</p>
+        </div>
+        <div class="device-card">
+          <div class="device-img">
+            <div class="laser"></div>
+          </div>
+          <h4>设备图：激光器光源示意</h4>
+          <p class="muted">光源是光通信的起点。CPO 越往高密度发展，对光源功率、稳定性和热管理要求越高。</p>
+        </div>
+      </div>
+
+      <div class="source-box">
+        背景外链：Cisco 对 CPO 开放生态的讨论提到，把 optics 与 switch silicon 放到同一封装中，有助于降低功耗：
+        <a href="https://blogs.cisco.com/sp/co-packaged-optics-and-an-open-ecosystem" target="_blank" rel="noopener">Cisco：Co-Packaged Optics and an Open Ecosystem</a>
+      </div>
+    </section>
+
+    <section id="components" class="section">
+      <div class="section-title">
+        <div class="num">8</div>
+        <div>
+          <h2>光器件层：小零件，大弹性</h2>
+          <p class="lead">A 股里很多 CPO 概念不是直接做完整 CPO 系统，而是做高精度光器件、连接器、FAU、透镜、WDM 等。</p>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>光器件是什么？</h3>
+          <p>光器件是光模块和光引擎里的“精密零部件”。它们不一定像光模块那样显眼，但决定光信号能否低损耗、稳定、可量产地在芯片、光纤和模块之间传递。CPO 和硅光越发展，精密耦合、无源器件和微光学组件的价值越容易提升。</p>
+          <h3>常见器件</h3>
+          <p><span class="tag">FAU 光纤阵列</span><span class="tag">透镜</span><span class="tag">隔离器</span><span class="tag">环形器</span><span class="tag">MPO/MTP 连接器</span><span class="tag">PLC 分路器</span><span class="tag">AWG</span><span class="tag">WDM 器件</span></p>
+          <p>到了 CPO 光引擎，空间更小、集成度更高、散热更难，对 FAU、透镜、隔离器、AWG、WDM、陶瓷基板、微光学组件和主动耦合能力的要求都会提高。这也是为什么一些光器件公司会被市场赋予 CPO 弹性。</p>
+        </div>
+        <div class="device-card">
+          <div class="device-img">
+            <div class="fiber-array"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          </div>
+          <h4>设备图：FAU 光纤阵列示意</h4>
+          <p class="muted">FAU 用来把多根光纤精准排列并耦合到光芯片或光引擎，是高密度光互连的重要组件。</p>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th>公司</th><th>环节</th><th>你要看什么</th></tr></thead>
+        <tbody>
+          <tr><td>天孚通信</td><td>光器件、光电封装</td><td>重点看 FAU、透镜、隔离器、光引擎配套、海外客户和光电封装能力</td></tr>
+          <tr><td>太辰光</td><td>光纤连接器、光器件</td><td>重点看数据中心高密度连接、MPO / MTP、海外客户和产能</td></tr>
+          <tr><td>仕佳光子</td><td>PLC、AWG、无源器件</td><td>重点看 WDM、AWG、PLC 在高速数通和硅光中的配套价值</td></tr>
+          <tr><td>光库科技</td><td>铌酸锂调制器、光器件</td><td>重点看薄膜铌酸锂调制器在高速光通信中的商业化进展</td></tr>
+          <tr><td>博创科技</td><td>光模块、光器件</td><td>重点看数通产品升级、客户结构和是否进入高速 AI 链条</td></tr>
+          <tr><td>中瓷电子</td><td>陶瓷封装材料</td><td>重点看高可靠封装材料、陶瓷基板、光通信和微波器件应用</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="package" class="section">
+      <div class="section-title">
+        <div class="num">9</div>
+        <div>
+          <h2>封装测试层：CPO 能不能量产，关键看这里</h2>
+          <p class="lead">CPO 的难点不是把零件凑在一起，而是把光、电、热、机械结构一起稳定量产。</p>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card"><h4>光电耦合</h4><p>光纤、透镜、光芯片必须精准对准，主动耦合设备和工艺能力决定损耗和良率。</p></div>
+        <div class="card"><h4>热管理</h4><p>交换 ASIC 发热巨大，激光器、调制器、探测器都怕温度漂移，CPO 必须解决热串扰。</p></div>
+        <div class="card"><h4>测试复杂度</h4><p>CPO 需要同时测高速电性能、光功率、误码率、热稳定性和长期可靠性，测试成本不可忽视。</p></div>
+        <div class="card"><h4>可维护性</h4><p>可插拔模块可以现场更换，CPO 如果故障，维修边界、备件模式和整机替换成本都需要重新设计。</p></div>
+      </div>
+
+      <table>
+        <thead><tr><th>公司</th><th>位置</th><th>关注点</th></tr></thead>
+        <tbody>
+          <tr><td>TSMC</td><td>先进封装、硅光平台</td><td>关注硅光与先进封装、CoWoS / SoIC 等能力是否延伸到光电集成</td></tr>
+          <tr><td>ASE 日月光</td><td>封测</td><td>关注 silicon photonics 封装、光电集成和大客户合作</td></tr>
+          <tr><td>Amkor</td><td>封测</td><td>关注先进封装和光电封装能力</td></tr>
+          <tr><td>长电科技 / 通富微电 / 华天科技</td><td>国内封测</td><td>关注是否切入硅光、光电共封装、高速互连封装，而不是只看传统封测</td></tr>
+          <tr><td>罗博特科</td><td>自动化设备</td><td>关注光模块 / 光器件自动化、主动耦合、测试设备和客户订单</td></tr>
+        </tbody>
+      </table>
+
+      <div class="source-box">
+        背景外链：ASE 对 silicon photonics 的介绍中，将 CPO 视为提升 AI 应用能效和可扩展性的封装技术方向：
+        <a href="https://ase.aseglobal.com/silicon-photonics/" target="_blank" rel="noopener">ASE：Silicon Photonics and CPO</a>
+      </div>
+    </section>
+
+    <section id="companies" class="section">
+      <div class="section-title">
+        <div class="num">10</div>
+        <div>
+          <h2>相关公司行情模块：把产业链位置和股价表现一起看</h2>
+          <p class="lead">下面用 TradingView 小组件展示代表公司行情。A 股代码采用交易所前缀，可能需要网络环境支持 TradingView 加载。</p>
+        </div>
+      </div>
+
+      <h3>美股：交换芯片、网络设备、光通信平台</h3>
+      <div class="ticker-grid">
+        <div class="ticker-card"><div class="ticker-title">Broadcom <small>NASDAQ: AVGO</small></div><div class="tv-widget" data-symbol="NASDAQ:AVGO"></div></div>
+        <div class="ticker-card"><div class="ticker-title">NVIDIA <small>NASDAQ: NVDA</small></div><div class="tv-widget" data-symbol="NASDAQ:NVDA"></div></div>
+        <div class="ticker-card"><div class="ticker-title">Marvell <small>NASDAQ: MRVL</small></div><div class="tv-widget" data-symbol="NASDAQ:MRVL"></div></div>
+        <div class="ticker-card"><div class="ticker-title">Arista <small>NYSE: ANET</small></div><div class="tv-widget" data-symbol="NYSE:ANET"></div></div>
+        <div class="ticker-card"><div class="ticker-title">Coherent <small>NYSE: COHR</small></div><div class="tv-widget" data-symbol="NYSE:COHR"></div></div>
+        <div class="ticker-card"><div class="ticker-title">Lumentum <small>NASDAQ: LITE</small></div><div class="tv-widget" data-symbol="NASDAQ:LITE"></div></div>
+        <div class="ticker-card"><div class="ticker-title">Fabrinet <small>NYSE: FN</small></div><div class="tv-widget" data-symbol="NYSE:FN"></div></div>
+        <div class="ticker-card"><div class="ticker-title">Credo <small>NASDAQ: CRDO</small></div><div class="tv-widget" data-symbol="NASDAQ:CRDO"></div></div>
+      </div>
+
+      <h3>A 股：光模块、光器件、光芯片、封装设备</h3>
+      <div class="ticker-grid">
+        <div class="ticker-card"><div class="ticker-title">中际旭创 <small>SZSE: 300308</small></div><div class="tv-widget" data-symbol="SZSE:300308"></div></div>
+        <div class="ticker-card"><div class="ticker-title">新易盛 <small>SZSE: 300502</small></div><div class="tv-widget" data-symbol="SZSE:300502"></div></div>
+        <div class="ticker-card"><div class="ticker-title">天孚通信 <small>SZSE: 300394</small></div><div class="tv-widget" data-symbol="SZSE:300394"></div></div>
+        <div class="ticker-card"><div class="ticker-title">太辰光 <small>SZSE: 300570</small></div><div class="tv-widget" data-symbol="SZSE:300570"></div></div>
+        <div class="ticker-card"><div class="ticker-title">光迅科技 <small>SZSE: 002281</small></div><div class="tv-widget" data-symbol="SZSE:002281"></div></div>
+        <div class="ticker-card"><div class="ticker-title">源杰科技 <small>SSE: 688498</small></div><div class="tv-widget" data-symbol="SSE:688498"></div></div>
+        <div class="ticker-card"><div class="ticker-title">仕佳光子 <small>SSE: 688313</small></div><div class="tv-widget" data-symbol="SSE:688313"></div></div>
+        <div class="ticker-card"><div class="ticker-title">光库科技 <small>SZSE: 300620</small></div><div class="tv-widget" data-symbol="SZSE:300620"></div></div>
+        <div class="ticker-card"><div class="ticker-title">博创科技 <small>SZSE: 300548</small></div><div class="tv-widget" data-symbol="SZSE:300548"></div></div>
+        <div class="ticker-card"><div class="ticker-title">罗博特科 <small>SZSE: 300757</small></div><div class="tv-widget" data-symbol="SZSE:300757"></div></div>
+      </div>
+    </section>
+
+    <section id="framework" class="section">
+      <div class="section-title">
+        <div class="num">11</div>
+        <div>
+          <h2>以后看任何 CPO 公司，都用这套模板</h2>
+          <p class="lead">不要看到“CPO 概念”就直接判断受益。先判断它在产业链哪一层、收入靠什么兑现、CPO 会增加还是削弱它的价值量。</p>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div class="card"><h4>第一步：定位</h4><p>先判断公司在光模块、光器件、光芯片、电芯片、封装设备、交换机系统中的哪一层。位置不同，受益逻辑完全不同。</p></div>
+        <div class="card"><h4>第二步：兑现</h4><p>把收入分成已兑现的 800G / 1.6T 订单、正在验证的 LPO / 硅光，以及远期 CPO 预期，避免把概念当业绩。</p></div>
+        <div class="card"><h4>第三步：客户</h4><p>确认是否进入 NVIDIA、海外云厂商、头部光模块厂、Broadcom / Cisco / Arista 生态。客户认证比单纯产能更重要。</p></div>
+        <div class="card"><h4>第四步：价值量</h4><p>判断 CPO 是否提升它的单机价值量。如果它只做传统模块盒子，CPO 可能是替代；如果它做光引擎、光芯片、精密器件、封装，可能受益。</p></div>
+        <div class="card"><h4>第五步：竞争壁垒</h4><p>看产品是否高壁垒定制、是否有良率和工艺积累、是否被客户深度绑定。标准化低端器件更容易被压价。</p></div>
+        <div class="card"><h4>第六步：估值验证</h4><p>用订单、收入增速、毛利率、资本开支、库存、客户集中度和技术路线节点验证估值，而不是只看主题热度。</p></div>
+      </div>
+
+      <div class="callout">
+        进阶结论：<b>短期确定性在 800G / 1.6T 可插拔光模块；中期弹性在 LPO、硅光和高端光器件；长期胜负手在 CPO 光引擎、外置光源、交换 ASIC、先进封装和系统级客户认证。研究顺序应该是先看订单兑现，再看技术路线，最后看价值量迁移。</b>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <b>使用说明：</b>
+      本文档用于 CPO / 光模块产业链进阶学习，不构成投资建议。TradingView 行情组件为外部服务，若页面本地打开后行情无法加载，请检查网络环境或浏览器安全策略。具体公司判断需要继续结合财报、公告、客户认证、OFC 展会产品、券商研报、云厂商资本开支和行业价格变化进行交叉验证。
+    </footer>
+  </main>
+
+  <script>
+    function loadTradingViewWidgets() {
+      const widgets = document.querySelectorAll('.tv-widget');
+      widgets.forEach(function(container) {
+        const symbol = container.getAttribute('data-symbol');
+        const widgetShell = document.createElement('div');
+        widgetShell.className = 'tradingview-widget-container';
+        widgetShell.style.height = '100%';
+        widgetShell.style.width = '100%';
+
+        const widgetDiv = document.createElement('div');
+        widgetDiv.className = 'tradingview-widget-container__widget';
+        widgetDiv.style.height = '100%';
+        widgetDiv.style.width = '100%';
+        widgetShell.appendChild(widgetDiv);
+
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';
+        script.async = true;
+        script.innerHTML = JSON.stringify({
+          symbols: [[symbol + '|1D']],
+          chartOnly: false,
+          width: '100%',
+          height: '100%',
+          locale: 'zh_CN',
+          colorTheme: 'dark',
+          autosize: true,
+          showVolume: false,
+          showMA: false,
+          hideDateRanges: false,
+          hideMarketStatus: false,
+          hideSymbolLogo: false,
+          scalePosition: 'right',
+          scaleMode: 'Normal',
+          fontFamily: '-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif',
+          fontSize: '10',
+          noTimeScale: false,
+          valuesTracking: '1',
+          changeMode: 'price-and-percent',
+          chartType: 'area',
+          maLineColor: '#2962FF',
+          maLineWidth: 1,
+          maLength: 9,
+          lineWidth: 2,
+          lineType: 0,
+          dateRanges: ['1d|1', '1m|30', '3m|60', '12m|1D', '60m|1W']
+        });
+        widgetShell.appendChild(script);
+        container.appendChild(widgetShell);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', loadTradingViewWidgets);
+  </script>
+</body>
+</html>
