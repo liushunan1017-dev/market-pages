@@ -1,0 +1,577 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>美股每日复盘监控台</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --card: rgba(15, 26, 43, 0.92);
+      --card-2: rgba(20, 35, 58, 0.92);
+      --border: rgba(148, 163, 184, 0.18);
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(56, 189, 248, 0.18), transparent 34%),
+        radial-gradient(circle at 92% 12%, rgba(34, 197, 94, 0.13), transparent 30%),
+        linear-gradient(180deg, #07111f 0%, #0b1020 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    .page {
+      width: min(1440px, 100%);
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .title-wrap h1 {
+      margin: 0 0 8px;
+      font-size: clamp(26px, 3vw, 42px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+    }
+
+    .title-wrap p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.72);
+      color: #cbd5e1;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(15, 26, 43, 0.96), rgba(9, 16, 29, 0.94));
+      box-shadow: var(--shadow);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.12), transparent 42%);
+    }
+
+    .card-header {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px 16px 8px;
+      z-index: 1;
+    }
+
+    .card-title {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .card-title strong {
+      font-size: 17px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-title span {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .tag {
+      padding: 5px 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: #7dd3fc;
+      font-size: 12px;
+      border: 1px solid rgba(125, 211, 252, 0.16);
+    }
+
+    .widget-box {
+      position: relative;
+      min-height: 230px;
+      padding: 0 8px 8px;
+      z-index: 1;
+    }
+
+    .section {
+      margin-top: 16px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 2px 10px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .heatmap-card {
+      min-height: 560px;
+      padding: 12px;
+    }
+
+    .heatmap-card .tradingview-widget-container,
+    .heatmap-card .tradingview-widget-container__widget {
+      height: 540px;
+    }
+
+    .tabs-card {
+      padding: 14px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.86);
+      color: #cbd5e1;
+      border-radius: 999px;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.18s ease;
+    }
+
+    .tab-btn:hover {
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #e0f2fe;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.28), rgba(34, 197, 94, 0.16));
+      border-color: rgba(125, 211, 252, 0.55);
+      color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.08);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .screener-wrap {
+      height: 640px;
+      overflow: hidden;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: #0b1220;
+    }
+
+    .screener-wrap .tradingview-widget-container,
+    .screener-wrap .tradingview-widget-container__widget {
+      height: 640px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 14px 4px 0;
+      text-align: right;
+    }
+
+    @media (max-width: 960px) {
+      .page {
+        padding: 16px;
+      }
+
+      .header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .index-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .heatmap-card,
+      .heatmap-card .tradingview-widget-container,
+      .heatmap-card .tradingview-widget-container__widget {
+        min-height: 520px;
+        height: 520px;
+      }
+
+      .screener-wrap,
+      .screener-wrap .tradingview-widget-container,
+      .screener-wrap .tradingview-widget-container__widget {
+        height: 620px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="title-wrap">
+        <h1>美股每日复盘监控台</h1>
+        <p>三大指数 · 行业与主题热力图 · 指数成分股行情筛选</p>
+      </div>
+      <div class="badge">
+        <span class="pulse"></span>
+        TradingView 实时/延迟行情组件
+      </div>
+    </header>
+
+    <section class="index-grid" aria-label="美股三大指数">
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <strong>S&P 500</strong>
+            <span>SPY ETF Proxy</span>
+          </div>
+          <span class="tag">大盘基准</span>
+        </div>
+        <div class="widget-box">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+            {
+              "symbols": [["SPY", "AMEX:SPY|1D"]],
+              "chartOnly": false,
+              "width": "100%",
+              "height": "220",
+              "locale": "zh_CN",
+              "colorTheme": "dark",
+              "autosize": false,
+              "showVolume": false,
+              "showMA": false,
+              "hideDateRanges": false,
+              "hideMarketStatus": false,
+              "hideSymbolLogo": false,
+              "scalePosition": "right",
+              "scaleMode": "Normal",
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+              "fontSize": "10",
+              "noTimeScale": false,
+              "valuesTracking": "1",
+              "changeMode": "price-and-percent",
+              "chartType": "area",
+              "maLineColor": "#2962FF",
+              "maLineWidth": 1,
+              "maLength": 9,
+              "headerFontSize": "medium",
+              "lineWidth": 2,
+              "lineType": 0,
+              "dateRanges": ["1d|1", "5d|5", "1m|30", "3m|60", "12m|1D", "all|1M"]
+            }
+            </script>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <strong>Nasdaq 100</strong>
+            <span>QQQ ETF Proxy</span>
+          </div>
+          <span class="tag">科技成长</span>
+        </div>
+        <div class="widget-box">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+            {
+              "symbols": [["QQQ", "NASDAQ:QQQ|1D"]],
+              "chartOnly": false,
+              "width": "100%",
+              "height": "220",
+              "locale": "zh_CN",
+              "colorTheme": "dark",
+              "autosize": false,
+              "showVolume": false,
+              "showMA": false,
+              "hideDateRanges": false,
+              "hideMarketStatus": false,
+              "hideSymbolLogo": false,
+              "scalePosition": "right",
+              "scaleMode": "Normal",
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+              "fontSize": "10",
+              "noTimeScale": false,
+              "valuesTracking": "1",
+              "changeMode": "price-and-percent",
+              "chartType": "area",
+              "maLineColor": "#2962FF",
+              "maLineWidth": 1,
+              "maLength": 9,
+              "headerFontSize": "medium",
+              "lineWidth": 2,
+              "lineType": 0,
+              "dateRanges": ["1d|1", "5d|5", "1m|30", "3m|60", "12m|1D", "all|1M"]
+            }
+            </script>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <strong>Dow Jones</strong>
+            <span>DIA ETF Proxy</span>
+          </div>
+          <span class="tag">蓝筹价值</span>
+        </div>
+        <div class="widget-box">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+            {
+              "symbols": [["DIA", "AMEX:DIA|1D"]],
+              "chartOnly": false,
+              "width": "100%",
+              "height": "220",
+              "locale": "zh_CN",
+              "colorTheme": "dark",
+              "autosize": false,
+              "showVolume": false,
+              "showMA": false,
+              "hideDateRanges": false,
+              "hideMarketStatus": false,
+              "hideSymbolLogo": false,
+              "scalePosition": "right",
+              "scaleMode": "Normal",
+              "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+              "fontSize": "10",
+              "noTimeScale": false,
+              "valuesTracking": "1",
+              "changeMode": "price-and-percent",
+              "chartType": "area",
+              "maLineColor": "#2962FF",
+              "maLineWidth": 1,
+              "maLength": 9,
+              "headerFontSize": "medium",
+              "lineWidth": 2,
+              "lineType": 0,
+              "dateRanges": ["1d|1", "5d|5", "1m|30", "3m|60", "12m|1D", "all|1M"]
+            }
+            </script>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" aria-label="行业与主题热力图">
+      <div class="section-head">
+        <h2>Industry & Theme Heatmap</h2>
+        <p>用于快速判断当日强弱主线、行业轮动与风险偏好</p>
+      </div>
+      <div class="card heatmap-card">
+        <div class="tradingview-widget-container">
+          <div class="tradingview-widget-container__widget"></div>
+          <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-stock-heatmap.js" async>
+          {
+            "exchanges": [],
+            "dataSource": "SPX500",
+            "grouping": "sector",
+            "blockSize": "market_cap_basic",
+            "blockColor": "change",
+            "locale": "zh_CN",
+            "symbolUrl": "",
+            "colorTheme": "dark",
+            "hasTopBar": true,
+            "isDataSetEnabled": true,
+            "isZoomEnabled": true,
+            "hasSymbolTooltip": true,
+            "width": "100%",
+            "height": "540"
+          }
+          </script>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-label="指数成分股行情">
+      <div class="section-head">
+        <h2>Index Constituents Watchlist</h2>
+        <p>切换查看 S&P 500、Nasdaq 100、Dow Jones 成分股行情</p>
+      </div>
+      <div class="card tabs-card">
+        <div class="tabs" role="tablist" aria-label="指数成分股标签页">
+          <button class="tab-btn active" type="button" data-tab="sp500" role="tab" aria-selected="true">S&P 500 成分股</button>
+          <button class="tab-btn" type="button" data-tab="nasdaq100" role="tab" aria-selected="false">Nasdaq 100 成分股</button>
+          <button class="tab-btn" type="button" data-tab="dow30" role="tab" aria-selected="false">Dow Jones 30 成分股</button>
+        </div>
+
+        <div id="sp500" class="tab-panel active" role="tabpanel">
+          <div class="screener-wrap">
+            <div class="tradingview-widget-container">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+              {
+                "width": "100%",
+                "height": 640,
+                "defaultColumn": "performance",
+                "defaultScreen": "general",
+                "market": "america",
+                "showToolbar": true,
+                "colorTheme": "dark",
+                "locale": "zh_CN",
+                "largeChartUrl": "",
+                "isTransparent": true,
+                "displayCurrency": "USD",
+                "screen": "sp500_components"
+              }
+              </script>
+            </div>
+          </div>
+        </div>
+
+        <div id="nasdaq100" class="tab-panel" role="tabpanel">
+          <div class="screener-wrap">
+            <div class="tradingview-widget-container">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+              {
+                "width": "100%",
+                "height": 640,
+                "defaultColumn": "performance",
+                "defaultScreen": "general",
+                "market": "america",
+                "showToolbar": true,
+                "colorTheme": "dark",
+                "locale": "zh_CN",
+                "largeChartUrl": "",
+                "isTransparent": true,
+                "displayCurrency": "USD",
+                "screen": "nasdaq100_components"
+              }
+              </script>
+            </div>
+          </div>
+        </div>
+
+        <div id="dow30" class="tab-panel" role="tabpanel">
+          <div class="screener-wrap">
+            <div class="tradingview-widget-container">
+              <div class="tradingview-widget-container__widget"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+              {
+                "width": "100%",
+                "height": 640,
+                "defaultColumn": "performance",
+                "defaultScreen": "general",
+                "market": "america",
+                "showToolbar": true,
+                "colorTheme": "dark",
+                "locale": "zh_CN",
+                "largeChartUrl": "",
+                "isTransparent": true,
+                "displayCurrency": "USD",
+                "screen": "djia_components"
+              }
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <p class="footer-note">提示：顶部三大指数卡片使用 SPY、QQQ、DIA ETF 作为可嵌入代理行情；TradingView 免费嵌入组件的数据权限、延迟和可用字段以其服务实际返回为准。</p>
+  </main>
+
+  <script>
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const target = button.dataset.tab;
+
+        tabButtons.forEach((btn) => {
+          btn.classList.remove('active');
+          btn.setAttribute('aria-selected', 'false');
+        });
+
+        tabPanels.forEach((panel) => {
+          panel.classList.remove('active');
+        });
+
+        button.classList.add('active');
+        button.setAttribute('aria-selected', 'true');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
